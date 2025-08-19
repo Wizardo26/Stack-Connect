@@ -48,7 +48,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
       <h1>
         <Link to='/'>
           {' '}
-          <i className='fas fa-code'></i> DevConnector{' '}
+          <i className='fas fa-code'></i> Stack-Connect{' '}
         </Link>
       </h1>
       {!loading && (

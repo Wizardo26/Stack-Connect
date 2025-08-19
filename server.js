@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 const app = express();
 
@@ -8,10 +9,16 @@ connectDB();
 
 // Init Middleware
 app.use(express.json({ extended: false }));
-// app.use(express.json());
+app.use(cors()); // Enable CORS
 
+// Root route
 app.get('/', (req, res) => {
   res.send('API running');
+});
+
+// Test route
+app.get('/api/test', (req, res) => {
+  res.json({ msg: 'MongoDB is working and backend is connected!' });
 });
 
 // Define Routes
