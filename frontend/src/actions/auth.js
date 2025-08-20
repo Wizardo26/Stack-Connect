@@ -12,16 +12,13 @@ import {
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
-// Base URL of your deployed backend
-const API_BASE_URL = 'https://stack-connect-backend.onrender.com';
-
 // Load User
 export const loadUser = () => async (dispatch) => {
-  if (localStorage.token) {
+  if(localStorage.token) {
     setAuthToken(localStorage.token);
   }
   try {
-    const res = await axios.get(`${API_BASE_URL}/api/auth`);
+    const res = await axios.get('/api/auth');
     
     dispatch({
       type: USER_LOADED,
@@ -45,7 +42,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
   const body = JSON.stringify({ name, email, password });
 
   try {
-    const res = await axios.post(`${API_BASE_URL}/api/users`, body, config);
+    const res = await axios.post('/api/users', body, config);
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -53,7 +50,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
     });
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response?.data?.errors;
+    const errors = err.response.data.errors;
 
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
@@ -64,18 +61,18 @@ export const register = ({ name, email, password }) => async (dispatch) => {
   }
 };
 
-// Login User
+//Login User
 export const login = (email, password) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
-    },
-  };
+      'Content-Type': 'application/json'
+    }
+  }
 
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post(`${API_BASE_URL}/api/auth`, body, config);
+    const res = await axios.post('/api/auth', body, config);
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -84,19 +81,19 @@ export const login = (email, password) => async (dispatch) => {
 
     dispatch(loadUser());
 
-  } catch (err) {
-    const errors = err.response?.data?.errors;
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    } catch (err) {
+      const errors = err.response.data.errors;
+      if(errors) {
+        errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      }
+      dispatch({
+        type: LOGIN_FAIL,
+      });
     }
-    dispatch({
-      type: LOGIN_FAIL,
-    });
-  }
-};
+}
 
-// Logout and Clear profile
-export const logout = () => (dispatch) => {
+//Logout and Clear profile
+export const logout = () => dispatch => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
 };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setAlert } from '../../actions/alert';
+import { setAlert } from './alert';
 import {
   GET_POSTS,
   POST_ERROR,
@@ -9,7 +9,7 @@ import {
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
-} from '../../actions/types';
+} from './types';
 
 // Get posts
 export const getPosts = () => async (dispatch) => {
@@ -84,9 +84,10 @@ export const deletePost = (id) => async (dispatch) => {
 // Add post
 export const addPost = (formData) => async (dispatch) => {
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
   };
-
   try {
     const res = await axios.post('/api/posts', formData, config);
 
@@ -124,11 +125,16 @@ export const getPost = (id) => async (dispatch) => {
 // Add comment
 export const addComment = (postId, formData) => async (dispatch) => {
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
   };
-
   try {
-    const res = await axios.post(`/api/posts/comment/${postId}`, formData, config);
+    const res = await axios.post(
+      `/api/posts/comment/${postId}`,
+      formData,
+      config
+    );
 
     dispatch({
       type: ADD_COMMENT,
@@ -162,5 +168,3 @@ export const removeComment = (postId, commentId) => async (dispatch) => {
     });
   }
 };
-
-// export default Post;
